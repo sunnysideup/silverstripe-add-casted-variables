@@ -1,0 +1,53 @@
+{
+  "name": "sunnysideup/add-casted-variables",
+  "description": "This module allows you to add a list of values to the CMS Fields for a record based around the casting (casted) methods / variables so that you get more information abohe record",
+  "type": "silverstripe-vendormodule",
+  "keywords": [
+    "casting",
+    "casted",
+    "CMSFields",
+    "CMS Fields",
+    "More Intel",
+    "Debugging",
+    "About this Record",
+    "Created",
+    "LastEdited",
+    "CMS Experience"
+  ],
+  "license": "BSD-3-Clause",
+  "require": {
+    "silverstripe/framework": "^5.0",
+    "silverstripe/admin": "^2.0"
+  },
+  "require-dev": {
+    "sunnysideup/sswebpack_engine_only": "dev-master",
+    "silverleague/ideannotator": "*",
+    "phpunit/phpunit": "^9.6",
+    "squizlabs/php_codesniffer": "^3.7",
+    "silverstripe/standards": "^1",
+    "phpstan/extension-installer": "^1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sunnysideup\\AddCastedVariables\\": "src/"
+    }
+  },
+  "extra": {
+    "expose": [
+      "client/dist"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "bin": [
+    "bin/sake-npm-build-add-casted-variables.sh",
+    "bin/sake-npm-watch-add-casted-variables.sh"
+  ],
+  "authors": [
+    {
+      "name": "Nicolaas Thiemen Francken",
+      "email": "modules@sunnysideup.co.nz",
+      "role": "lead developer"
+    }
+  ]
+}
