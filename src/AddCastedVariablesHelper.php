@@ -72,10 +72,14 @@ class AddCastedVariablesHelper
         if ($v->hasMethod('Nice')) {
             $niceValue = $v->Nice();
         } else {
-            $niceValue = $v->forTemplate();
+            // $niceValue = $v->forTemplate();
+            $niceValue = $v->RAW();
+        }
+        if (is_array($niceValue)) {
+            $niceValue = implode(', ', $niceValue);
         }
         $className = ReadonlyField::class;
-        if ($type === 'HTMLText' || (strpos($niceValue, '<') && strpos($niceValue, '</'))) {
+        if ($type === 'HTMLText' || $this->isHtmlOrEscaped($niceValue)) {
             $className = HTMLReadonlyField::class;
         }
         $fields->addFieldsToTab(
@@ -84,5 +88,23 @@ class AddCastedVariablesHelper
                 $className::create($name . 'NICE', $this->originatingObject->fieldLabel($name), $niceValue),
             ]
         );
+    }
+    protected function isHtmlOrEscaped(mixed $value): bool
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        // Check for HTML tags
+        if ($value !== strip_tags($value)) {
+            return true;
+        }
+
+        // Check for common HTML entities
+        if (preg_match('/&(?:[a-zA-Z]{2,8}|#\d{2,5}|#x[0-9a-fA-F]{2,4});/', $value)) {
+            return true;
+        }
+
+        return false;
     }
 }
