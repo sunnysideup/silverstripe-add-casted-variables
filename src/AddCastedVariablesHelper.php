@@ -30,8 +30,9 @@ class AddCastedVariablesHelper
      *              provide a simple list of field names
      * @return void
      */
-    public function AddCastingFields($originatingObject, FieldList $fields, ?string $tabName = 'Root.ⓘ', ?array $otherFieldsToAdd = [], ?array $fieldsToSkip = [])
+    public function AddCastingFields($originatingObject, FieldList $fields, ?string $tabName = 'Root.FullDetails', ?array $otherFieldsToAdd = [], ?array $fieldsToSkip = [])
     {
+        // @todo: consider using ⓘ as the title for the tab
         $this->originatingObject = $originatingObject;
         $otherFieldsToAdd = [
             'Created' => 'Datetime',
