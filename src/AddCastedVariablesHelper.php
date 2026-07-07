@@ -105,6 +105,7 @@ class AddCastedVariablesHelper
         if ($value !== strip_tags($value)) {
             return true;
         }
+
         // Check for common HTML entities
         return (bool) preg_match('/&(?:[a-zA-Z]{2,8}|#\d{2,5}|#x[0-9a-fA-F]{2,4});/', $value);
     }
