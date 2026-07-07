@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Sunnysideup\AddCastedVariables;
 
-use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Injector\Injectable;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HTMLReadonlyField;
 use SilverStripe\Forms\ReadonlyField;
-use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\FieldType\DBField;
 
 
@@ -49,6 +47,7 @@ class AddCastedVariablesHelper
         foreach ($otherFieldsToAdd as $name => $type) {
             $this->addCastingField($fields, $tabName, $name, $type);
         }
+
         $castedFields = $this->originatingObject->config()->get('casting');
         $castedFields = array_diff_key($castedFields, $fieldsToSkip, $otherFieldsToAdd);
         foreach ($castedFields as $name => $type) {
@@ -67,22 +66,27 @@ class AddCastedVariablesHelper
         } else {
             $v = $this->originatingObject->dbObject($name);
         }
+
         if (!($v instanceof DBField)) {
             $v = DBField::create_field($type, $v);
         }
+
         if ($v->hasMethod('Nice')) {
             $niceValue = $v->Nice();
         } else {
             // $niceValue = $v->forTemplate();
             $niceValue = $v->RAW();
         }
+
         if (is_array($niceValue)) {
             $niceValue = implode(', ', $niceValue);
         }
+
         $className = ReadonlyField::class;
         if ($type === 'HTMLText' || $this->isHtmlOrEscaped($niceValue)) {
             $className = HTMLReadonlyField::class;
         }
+
         $fields->addFieldsToTab(
             $tabName,
             [
@@ -90,6 +94,7 @@ class AddCastedVariablesHelper
             ]
         );
     }
+
     protected function isHtmlOrEscaped(mixed $value): bool
     {
         if (!is_string($value)) {
@@ -100,12 +105,7 @@ class AddCastedVariablesHelper
         if ($value !== strip_tags($value)) {
             return true;
         }
-
         // Check for common HTML entities
-        if (preg_match('/&(?:[a-zA-Z]{2,8}|#\d{2,5}|#x[0-9a-fA-F]{2,4});/', $value)) {
-            return true;
-        }
-
-        return false;
+        return (bool) preg_match('/&(?:[a-zA-Z]{2,8}|#\d{2,5}|#x[0-9a-fA-F]{2,4});/', $value);
     }
 }
